@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-*Replace `{{...}}` placeholders during onboarding. Run `/onboard` after filling them in. See `SETUP.md` for the full setup runbook.*
+*Replace `{{...}}` placeholders during onboarding. Run `/second-brain-onboard` after filling them in, then `/voice-onboard` and `/content-strategy-onboard` to populate the writing-system layer. See `SETUP.md` for the full setup runbook.*
 
 This file is the operating manual for all agents working in this vault. Every agent that mounts this vault — Claude Code or any future agent — follows these conventions.
 
@@ -141,15 +141,31 @@ Every brain-writing skill (`knowledge-ingest`, `meeting-ingest`, `report-ingest`
 
 ## Skills
 
-The template ships with seven skills, all auto-discovered from `.claude/skills/`:
+The template ships with sixteen skills, all auto-discovered from `.claude/skills/`:
 
-- **Onboard** (`/onboard`) — One-time cold-start orchestration. Walks through filling placeholders, scaffolding the vault, and bootstrapping initial knowledge pages from intake material.
+**Onboarding family (run once after clone):**
+- **Second-brain onboard** (`/second-brain-onboard`) — One-time cold-start orchestration. Walks through filling placeholders, scaffolding the vault, and bootstrapping initial knowledge pages from intake material.
+- **Voice onboard** (`/voice-onboard`) — Walk EA + exec through voice intake. Populates `writing-system/voice.md`, `writing-system/kill-list.md` (personal-specific section), and `writing-system/audience/<primary>.md`. Verifies output by drafting a sample email.
+- **Content-strategy onboard** (`/content-strategy-onboard`) — Walk EA + exec through content strategy design. Populates all 8 `writing-system/strategy/*.md` files and refreshes `engine/editorial-filter.md` against the populated domains.
+
+**Knowledge layer (ongoing):**
 - **Meeting ingest** (`/meeting-ingest <path>`) — Process a meeting note into people timelines, entity timelines, and project action candidates.
 - **Report ingest** (`/report-ingest <path>`) — Process a daily/weekly/monthly report into project + area updates.
 - **Knowledge ingest** (`/knowledge-ingest <path>`) — Process raw captures (inbox items, articles, pasted text) into synthesized knowledge graph pages (people, companies, tools, concepts, comparisons).
+
+**Writing system (drafting + content graph):**
+- **Long-form writing** (`/long-form-writing`) — Newsletter / X long-form / LinkedIn long-form drafting in the exec's voice.
+- **Email writing** (`/email-writing`) — Promotional / broadcast / sequence email drafting.
+- **Landing page writing** (`/landing-page-writing`) — Landing / sales / offer page copy.
+- **Repurposing** (`/repurposing`) — Transform an existing long-form piece into platform-native short-mid form (X thread, X short, LinkedIn post).
+- **Content ingest** (`/content-ingest <path>`) — Process transcripts, voice memos, meeting notes, or pasted text into structured takes and stories in the content graph.
+- **Research topics** (`/research-topics`) — Pull external trending content aligned with the strategy, score against the editorial filter, write candidate ideas to `content-graph/ideas/`.
+- **Suggest topic** (`/suggest-topic`) — Surface ranked topic recommendations from existing material. Cadence-aware in no-args mode.
+
+**Maintenance:**
 - **Dream cycle** (`/dream-cycle`) — Nightly maintenance pass. Auto-ingests today's captures, runs `lint --fix`, flags orphans/stale content, synthesizes session logs into candidate inbox items. Outputs to `reports/dream-cycle/YYYY-MM-DD.md`.
 - **Triage** (`/triage`) — Periodic action-candidate cleanup using a 7-class / 3-lane sort to keep the project action queue clean.
-- **Lint** (`/lint`) — Audit and auto-fix vault health (frontmatter, orphans, broken wikilinks, typed-link reciprocity, stale content).
+- **Lint** (`/lint`) — Audit and auto-fix vault health (frontmatter, orphans, broken wikilinks, typed-link reciprocity, stale content, content-graph health).
 
 ## Working With This Vault
 

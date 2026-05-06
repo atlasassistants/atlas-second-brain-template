@@ -43,7 +43,10 @@ Fill the following placeholders. Use `grep -rln '{{' ~/brain` to find every unfi
 | `.claude/skills/knowledge-ingest/SKILL.md` | same |
 | `.claude/skills/dream-cycle/SKILL.md` | same + `{{LAUNCHD_LABEL_PREFIX}}` (e.g. `com.acme.brain`) |
 | `.claude/skills/lint/SKILL.md` | same as meeting-ingest |
-| `.claude/skills/onboard/SKILL.md` | typically no placeholders, but check |
+| `.claude/skills/second-brain-onboard/SKILL.md` | typically no placeholders, but check |
+| `.claude/skills/voice-onboard/SKILL.md` | typically no placeholders, but check |
+| `.claude/skills/content-strategy-onboard/SKILL.md` | typically no placeholders, but check |
+| `.claude/skills/{long-form-writing,email-writing,landing-page-writing,repurposing,content-ingest,research-topics,suggest-topic}/SKILL.md` | `{{VAULT_NAME}}`, `{{VAULT_OWNER_SHORT_NAME}}` |
 | `.claude/skills/triage/SKILL.md` | typically no placeholders, but check |
 
 ### One-shot fill (recommended)
@@ -64,17 +67,19 @@ sed -i '' \
 
 Verify after: `grep -r '{{' ~/brain --include='*.md' | head` should return only `{{DATE}}` and `{{EXEC_*}}` entries (which the EA fills by hand to capture the exec-specific tone).
 
-## 3. Run `/onboard`
+## 3. Run the onboarding family
+
+The template ships three onboarding skills, run in order. Each is independently invocable; you can run them in separate sessions.
 
 ```bash
 cd ~/brain
 claude
 ```
 
-Then in Claude Code:
+### 3a. `/second-brain-onboard` — bootstrap the brain
 
 ```
-/onboard
+/second-brain-onboard
 ```
 
 What to expect:
@@ -87,7 +92,31 @@ What to expect:
 - **Phase 6** (variable, 7-35 min per 20-meeting batch): runs bulk meeting-ingest. For 60 days = 1-3 batches typically. For 90+ days, 4-8 batches.
 - **Phase 7** (instant): writes `reports/onboard/<date>-onboarding-complete.md`.
 
-If a phase errors, you can re-run `/onboard` — it's idempotent and skips already-complete phases.
+If a phase errors, you can re-run `/second-brain-onboard` — it's idempotent and skips already-complete phases.
+
+### 3b. `/voice-onboard` — extract the exec's voice
+
+```
+/voice-onboard
+```
+
+What to expect (5 phases): intake source (transcript / voice memo / live interview) → voice signature extraction → ICP definition → kill-list extraction → verification draft (sample email).
+
+Outputs: `writing-system/voice.md`, `writing-system/kill-list.md` (personal-specific section), `writing-system/audience/<primary>.md`, plus a verification draft email at `areas/content/emails/drafts/`.
+
+Read `writing-system/_examples/sample-exec/voice.md` (Sarah Chen / Gridline) for an example of populated output.
+
+### 3c. `/content-strategy-onboard` — design the content strategy
+
+```
+/content-strategy-onboard
+```
+
+What to expect (9 phases): domain definition → pillar definition → audience-domain mapping → commercial mapping → cadence → distribution → voice frame → editorial filter refresh → verification.
+
+Outputs: all 8 `writing-system/strategy/*.md` files populated, plus `writing-system/engine/editorial-filter.md` refreshed with the populated domains.
+
+This skill is checkpointed per phase — you can pause and resume across sessions. Read `writing-system/_examples/sample-exec/strategy/` for example outputs.
 
 ## 4. Schedule the dream-cycle
 
@@ -148,7 +177,7 @@ Check `reports/dream-cycle/YYYY-MM-DD.md` was created (with today's date). Missi
 
 ## 5. Inbox stub triage post-onboarding
 
-`/onboard` Phase 4 drops <3-touch contacts as `inbox/YYYY-MM-DD-person-<name>.md` stubs. Most stay there. Promote only those who:
+`/second-brain-onboard` Phase 4 drops <3-touch contacts as `inbox/YYYY-MM-DD-person-<name>.md` stubs. Most stay there. Promote only those who:
 
 - Become recurring contacts after onboarding (track over 2-4 weeks)
 - Are on the exec's known calendar going forward
@@ -178,7 +207,7 @@ Both are recommended for clients who want resilience + cloud automations.
 
 ## Troubleshooting
 
-- **`/onboard` Phase 1 refuses to proceed:** unfilled placeholders. Run `grep -r '{{' ~/brain --include='*.md'` to find them.
+- **`/second-brain-onboard` Phase 1 refuses to proceed:** unfilled placeholders. Run `grep -r '{{' ~/brain --include='*.md'` to find them.
 - **Dream-cycle didn't run overnight:** check `~/Library/Logs/brain-dream-cycle.log` (macOS) or `~/.local/log/brain-dream-cycle.log` (Linux). Common causes: launchd not loaded, claude binary path wrong, working dir wrong.
 - **Meeting-ingest creating duplicate timeline entries:** indicates idempotency check broke. File a bug — should be no-op for already-ingested meetings.
 - **Triage taking forever:** dispatch parallel subagents per project. Never within a single project (race conditions).
