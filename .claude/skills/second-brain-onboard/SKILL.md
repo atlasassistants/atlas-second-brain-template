@@ -1,12 +1,12 @@
 ---
-name: onboard
-description: One-time cold-start setup for a freshly-cloned Atlas second brain. Validates context placeholders, orchestrates meeting import from the client's tool of choice, frequency-scans attendees, pre-creates knowledge/people pages, runs bulk meeting-ingest with the 30-day cutoff, and produces an onboarding report. Re-invocation is idempotent (skips already-complete phases).
+name: second-brain-onboard
+description: One-time cold-start setup for a freshly-cloned Atlas second brain. Validates context placeholders, orchestrates meeting import from the client's tool of choice, frequency-scans attendees, pre-creates knowledge/people pages, runs bulk meeting-ingest with the 30-day cutoff, and produces an onboarding report. Re-invocation is idempotent (skips already-complete phases). First of three onboarding skills in the family — run before /voice-onboard and /content-strategy-onboard. Trigger phrases: "/second-brain-onboard", "set up the brain", "first-time setup".
 tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion
 ---
 
-# Onboard
+# Second-Brain Onboard
 
-Single skill the EA invokes after `git clone` + basic placeholder fill-in. Walks through 7 phases producing a populated brain in one session.
+First of three onboarding skills in the writing-system addon family (`/second-brain-onboard` → `/voice-onboard` → `/content-strategy-onboard`). The EA invokes this after `git clone` + basic placeholder fill-in. Walks through 7 phases producing a populated brain in one session. Voice intake and content-strategy intake are separate skills that run after this one.
 
 ## When to use
 

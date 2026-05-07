@@ -14,7 +14,7 @@ updated: {{DATE}}
 
 ## People
 
-_Empty — populated by `/onboard` and `/meeting-ingest`._
+_Empty — populated by `/second-brain-onboard` and `/meeting-ingest`._
 
 ## Companies
 

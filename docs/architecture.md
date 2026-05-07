@@ -72,7 +72,7 @@ A capture-to-synthesis pipeline needs **one ingest skill per capture type** — 
 
 All four open with the same filing-rules mandate (resolver lookup) and emit the same typed-wikilink shape. They differ in their **input parsing** (meetings have attendees and decisions; reports have status sections; transcripts have voice signatures) and their **synthesis shape** (which directories they enrich).
 
-> The `atlas-second-brain-template` ships with `meeting-ingest`, `report-ingest`, and `knowledge-ingest`. The `content-ingest` skill (writing-system / content-graph layer) is a separate addon — relevant for clients who publish (founders with newsletters, coaches, content-led businesses) and not built into the core template.
+> The `atlas-second-brain-template` ships with the full set of ingest skills (`meeting-ingest`, `report-ingest`, `knowledge-ingest`) for the second-brain layer plus `content-ingest` (writing-system / content-graph layer) for the writing-system addon. The writing-system layer is universal — every exec gets it regardless of whether they publish — because voice and audience definition compound across email, internal memos, and external publishing alike. Voice + strategy intake happen via `/voice-onboard` and `/content-strategy-onboard`. Cloning the template gives an EA a working substrate for both knowledge management and voice-aligned writing in week 1.
 
 ### Configuration block
 
@@ -186,7 +186,7 @@ The economics: with no pre-creation, ingesting 150 meetings might create 250+ in
 
 This is also why the **vault-owner skip** in Section 4's Configuration is non-optional — the vault owner appears in 100% of meetings; without the skip they'd dominate the stub-creation budget.
 
-> The `/onboard` skill in this template orchestrates the full pre-creation procedure as Phases 4-5 (frequency scan + classify + user-confirm + pre-create), then runs Phase 6 bulk meeting-ingest. One command, end-to-end.
+> The `/second-brain-onboard` skill in this template orchestrates the full pre-creation procedure as Phases 4-5 (frequency scan + classify + user-confirm + pre-create), then runs Phase 6 bulk meeting-ingest. One command, end-to-end. (`/voice-onboard` and `/content-strategy-onboard` populate the writing-system layer afterward.)
 
 ## 8. Migration pattern for legacy data
 
